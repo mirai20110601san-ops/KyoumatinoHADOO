@@ -49,7 +49,7 @@
   .coin { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,194,77,.3); background: rgba(255,194,77,.1); border-radius: 99px; padding: 4px 12px; font-size: 10px; color: var(--gold); }
   .coin b { font-weight: 400; font-variant-numeric: tabular-nums; }
   .coin em { font-style: normal; font-size: 8px; letter-spacing: .2em; opacity: .6; }
-  .tools { display: flex; align-items: center; gap: 8px; }
+  .tools { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
   .tbtn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,.24); background: rgba(255,255,255,.07); border-radius: 99px; padding: 5px 14px; font-size: 10px; letter-spacing: .2em; color: rgba(255,255,255,.85); text-decoration: none; transition: border-color .2s, background .2s, color .2s; }
   .tbtn:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.13); color: #fff; }
   .tbtn b { font-weight: 400; font-size: 9px; color: #ffc24d; }
@@ -125,17 +125,37 @@
   .gbox .reveal.pop { animation: pop .5s ease-out; }
   @keyframes pop { 0% { transform: scale(1.22); filter: brightness(2.2); } 100% { transform: none; filter: none; } }
   .hint { font-size: 9px; letter-spacing: .25em; color: rgba(255,255,255,.28); margin-top: 6px; }
-  #gacha, #pass, #logout { background: rgba(6,6,10,.95); }
+  #gacha, #pass, #logout, #skin { background: rgba(6,6,10,.95); }
   .passcode { font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; font-size: 40px; letter-spacing: .3em; margin: 6px 0 0 .3em; color: var(--gold); font-variant-numeric: tabular-nums; }
   .passrow { display: flex; gap: 8px; margin-top: 10px; }
   .passrow input { flex: 1; min-width: 0; border: 1px solid rgba(255,255,255,.24); background: rgba(0,0,0,.3); border-radius: 10px; padding: 8px 12px; color: #fff; font-size: 20px; letter-spacing: .4em; text-align: center; font-variant-numeric: tabular-nums; }
   .passrow input:focus { outline: none; border-color: rgba(255,194,77,.7); }
+  .skitem { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.08); }
+  .skitem:first-child { border-top: 0; }
+  .skname { flex: 1 1 70px; min-width: 70px; font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; font-size: 16px; letter-spacing: .15em; }
+  .skbtn { justify-content: center; min-width: 108px; }
+  .skbtn.on { border-color: rgba(139,226,139,.7); background: rgba(139,226,139,.14); color: #a5f0a5; }
+  .skbtn:disabled { opacity: .4; cursor: default; }
   .passmsg { min-height: 16px; margin: 10px 0 0; font-size: 11px; text-align: center; color: rgba(255,255,255,.6); }
   .passmsg.ok { color: #8be28b; }
   .passmsg.ng { color: #ff8a8a; }
   .gpanel { position: relative; width: 100%; max-width: 500px; max-height: 100%; overflow-y: auto; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: rgba(11,11,18,.96); padding: 16px; }
   .gclose { position: absolute; right: 10px; top: 8px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.24); background: rgba(255,255,255,.07); border-radius: 99px; color: #fff; font-size: 13px; line-height: 1; }
   .gclose:hover { background: rgba(255,255,255,.15); }
+
+  /* キャラ選択: スクロール位置に関係なく常に見える閉じるボタン */
+  #selectClose {
+    position: fixed; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right));
+    z-index: 60; width: 40px; height: 40px; font-size: 15px;
+    border: 1px solid rgba(255,255,255,.42); color: #fff;
+    background: rgba(11,11,18,.92);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.6), inset 0 0 12px rgba(255,255,255,.08);
+    transition: background .2s, transform .15s, border-color .2s;
+  }
+  #selectClose:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.7); }
+  #selectClose:active { transform: scale(.94); }
+  #select .spn { padding-top: 18px; }
   .glabel { font-size: 8px; letter-spacing: .45em; color: rgba(255,255,255,.3); }
   .gtitle { font-family: "Shippori Mincho", "Hiragino Mincho ProN", serif; font-size: 18px; letter-spacing: .2em; margin: 6px 0 0; }
   .grow { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,.4); margin-top: 12px; }
@@ -263,7 +283,7 @@
   .pad button.fire:active { background: rgba(255,255,255,.14); }
   .again, .toTitle { padding: 16px 40px; font-size: 15px; }
 </style>
-<script>
+<script>if (window.self !== window.top) window.parent.postMessage({ type: 'SANDBOX_DOCUMENT_START' }, '*');</script><script>
     (function() {
         var buffer = window.__base44_preview_native_failures;
         if (!buffer || buffer.version !== 1 || !Array.isArray(buffer.entries)) {
@@ -362,7 +382,7 @@
     </script><script data-preview-data-env-pin="true">
     (function() {
         var KEY = 'base44_data_env';
-        var APP_API_PATH = "/api/apps/6affdcdb0a71cb81fc42b51b/";
+        var APP_API_PATH = "/api/apps/6b01caf7f9a9f2ff42db23e3/";
         var STORAGE_KEY = KEY + ':' + APP_API_PATH;
         var API_ORIGINS = ["https://app.base44.com", "https://base44.app"].map(function(u) { return new URL(u).origin; });
         var REQUEST_INIT_KEYS = [
@@ -429,7 +449,7 @@
             return origOpen.apply(this, arguments);
         };
     })();
-    </script><script defer="" data-preview-inject="true" data-parent-origins="https://app.base44.com https://superagent.base44.com" data-app-id="6affdcdb0a71cb81fc42b51b" data-preview-type="latest_preview" data-rum-app-id="db50c921-10c3-4f12-bccb-950fa174b708" data-rum-client-token="pubfe8a4f2972b412b4556fd67e77f82cb4" data-dd-site="datadoghq.com" src="https://app.base44.com/builder-bridge.js?t=1795154089"></script><script>
+    </script><script defer data-preview-inject="true" data-parent-origins="https://app.base44.com https://superagent.base44.com" data-app-id="6b01caf7f9a9f2ff42db23e3" data-preview-type="sandbox" data-rum-app-id="db50c921-10c3-4f12-bccb-950fa174b708" data-rum-client-token="pubfe8a4f2972b412b4556fd67e77f82cb4" data-dd-site="datadoghq.com" src="https://app.base44.com/builder-bridge.js?t=1795279931"></script><script>
     (function() {
         var IGNORE = { SCRIPT: 1, STYLE: 1, LINK: 1, META: 1, NOSCRIPT: 1, TEMPLATE: 1 };
         const fire = () => window.parent.postMessage({ type: 'IFRAME_CONTENT_READY' }, '*');
@@ -454,8 +474,8 @@
     </script><script>
     (function() {
         if (window.self === window.top) return;
-        var APP_ID = "6affdcdb0a71cb81fc42b51b";
-        var PREVIEW_TYPE = "latest_preview";
+        var APP_ID = "6b01caf7f9a9f2ff42db23e3";
+        var PREVIEW_TYPE = "sandbox";
         var on404 = false;
         var booted = false;
         function detect() { return !!document.querySelector('[data-source-location^="PageNotFound:"]'); }
@@ -480,6 +500,65 @@
         }
         if (document.body) { start(); }
         else { document.addEventListener('DOMContentLoaded', start, { once: true }); }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        var HEADINGS = ["Your app will appear here", "Your app starts here"];
+        var shown = false;
+        var booted = false;
+        var documentId = Math.random().toString(36).slice(2);
+        function detect() {
+            var hs = document.getElementsByTagName('h1');
+            for (var i = 0; i < hs.length; i++) {
+                if (HEADINGS.indexOf((hs[i].textContent || '').trim()) !== -1) return true;
+            }
+            return false;
+        }
+        function payload() { return { app_id: "6b01caf7f9a9f2ff42db23e3", preview_type: "sandbox", url_path: window.location.pathname, document_id: documentId }; }
+        function tick() {
+            var now = detect();
+            if (now && !shown) {
+                shown = true;
+                window.parent.postMessage({ type: 'PREVIEW_TEMPLATE_HOME_SHOWN', payload: payload() }, '*');
+            } else if (!now && (shown || !booted)) {
+                shown = false;
+                window.parent.postMessage({ type: 'PREVIEW_TEMPLATE_HOME_CLEARED', payload: payload() }, '*');
+            }
+            booted = true;
+        }
+        function start() {
+            tick();
+            new MutationObserver(tick).observe(document.body, { childList: true, subtree: true, characterData: true });
+        }
+        if (document.body) { start(); }
+        else { document.addEventListener('DOMContentLoaded', start, { once: true }); }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        function fire() { window.parent.postMessage({ type: 'REACT_ROOT_HAS_CHILDREN' }, '*'); }
+        function findRoot() {
+            return document.getElementById('root')
+                || document.getElementById('app')
+                || document.querySelector('[data-react-root]');
+        }
+        // One-shot: wait for DOMContentLoaded (static HTML parsed by then, so the
+        // Base44 convention <div id="root"> is either present or not coming),
+        // observe the root's childList until the first element child appears,
+        // then fire and disconnect. No tree-wide subtree observer.
+        function start() {
+            var root = findRoot();
+            if (!root) return;
+            if (root.childElementCount > 0) { fire(); return; }
+            var obs = new MutationObserver(function() {
+                if (root.childElementCount > 0) { fire(); obs.disconnect(); }
+            });
+            obs.observe(root, { childList: true });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', start, { once: true });
+        } else { start(); }
     })();
     </script><script>
     (function() {
@@ -513,6 +592,258 @@
     </script><script>
     (function() {
         if (window.self === window.top) return;
+        var APP_ID = "6b01caf7f9a9f2ff42db23e3";
+        var PREVIEW_TYPE = "sandbox";
+        var DEPS_PATH = '/node_modules/.vite/deps/';
+        var fired = false;
+        function isViteDep(url) {
+            return typeof url === 'string' && url.indexOf(DEPS_PATH) !== -1;
+        }
+        var confirmed = {};
+        function looksFailed(entry) {
+            // HTTP failure status (Chrome 109+).
+            if (entry.responseStatus && entry.responseStatus >= 400) return true;
+            // Aborted / blocked / network-error: request ran, nothing decoded.
+            // decodedBodySize === 0 distinguishes from cache hits (Safari has no
+            // deliveryType, so we can't rely on it to exclude cached responses).
+            return entry.transferSize === 0
+                && entry.decodedBodySize === 0
+                && entry.duration > 0
+                && entry.responseEnd > 0;
+        }
+        // WebKit has no responseStatus and zeroes every size on a cache hit, so the
+        // size heuristic alone flags every cached dep. Re-ask the server instead; a
+        // rejected HEAD proves nothing, WebKit aborts it when the frame navigates away.
+        function confirmThenReport(entry) {
+            if (confirmed[entry.name]) return;
+            confirmed[entry.name] = true;
+            fetch(entry.name, { method: 'HEAD', cache: 'no-store' }).then(function(res) {
+                var type = res.headers.get('content-type') || '';
+                if (res.status >= 400 || type.indexOf('text/html') !== -1) report(entry, res.status);
+            }, function() {});
+        }
+        function report(entry, confirmedStatus) {
+            if (fired) return;
+            fired = true;
+            var nativeBuffer = window.__base44_preview_native_failures;
+            if (nativeBuffer && typeof nativeBuffer.append === 'function') {
+                nativeBuffer.append('Failed to load module ' + entry.name);
+            }
+            window.parent.postMessage({
+                type: 'SANDBOX_VITE_DEPS_404',
+                payload: {
+                    app_id: APP_ID,
+                    preview_type: PREVIEW_TYPE,
+                    url: entry.name,
+                    initiator_type: entry.initiatorType,
+                    response_status: entry.responseStatus || confirmedStatus
+                }
+            }, '*');
+        }
+        new PerformanceObserver(function(list) {
+            if (fired) return;
+            var entries = list.getEntries();
+            for (var i = 0; i < entries.length; i++) {
+                if (isViteDep(entries[i].name) && looksFailed(entries[i])) {
+                    if ('responseStatus' in entries[i]) {
+                        report(entries[i]);
+                        return;
+                    }
+                    confirmThenReport(entries[i]);
+                }
+            }
+        }).observe({ type: 'resource', buffered: true });
+    })();
+    </script><script>
+    (function() {
+        if (typeof PerformanceObserver === 'undefined') return;
+        var reported = {};
+        // Only the app's own module trees may put an error over the preview. A page
+        // can load an optional classic script (analytics, a widget) that fails while
+        // the app renders perfectly well; that must not read as broken app code.
+        // Recording is deliberately wider than reporting — the console buffer keeps
+        // every failed module for diagnostics.
+        function isAppModule(path) {
+            return path.indexOf('/src/') === 0 || path.indexOf('/base44/') === 0;
+        }
+        function modulePath(url) {
+            try {
+                var path = new URL(url, window.location.href).pathname;
+                // The bridge probes this standard SDK path opportunistically;
+                // legacy/custom apps are allowed not to provide it.
+                if (path === '/src/api/base44Client.js') return '';
+                if (path.indexOf('/node_modules/.vite/deps/') !== -1) return '';
+                return /[.](?:[cm]?[jt]sx?)$/i.test(path) ? path : '';
+            } catch (e) {
+                return '';
+            }
+        }
+        new PerformanceObserver(function(list) {
+            var entries = list.getEntries();
+            for (var index = 0; index < entries.length; index++) {
+                var entry = entries[index];
+                if (entry.initiatorType !== 'script') continue;
+                var status = entry.responseStatus;
+                if (!status) continue;
+                var path = modulePath(entry.name);
+                if (!path) continue;
+                if (status < 400) {
+                    // Recovered (an HMR fix re-requests it). Forget it, or breaking the
+                    // same path again later this document would be silently suppressed.
+                    delete reported[path];
+                    continue;
+                }
+                var message = status === 404
+                    ? 'Module not found: ' + path
+                    : 'Module failed to load (' + status + '): ' + path;
+                var buffer = window.__base44_preview_native_failures;
+                if (buffer && typeof buffer.append === 'function') buffer.append(message);
+                if (!isAppModule(path) || reported[path] || window.self === window.top) continue;
+                reported[path] = true;
+                window.parent.postMessage({
+                    type: 'SANDBOX_MODULE_LOAD_FAILED',
+                    payload: { path: path, status: status, message: message }
+                }, '*');
+            }
+        }).observe({ type: 'resource', buffered: true });
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        if (typeof performance === 'undefined' || typeof performance.getEntriesByType !== 'function') return;
+        var DEPS_PATH = '/node_modules/.vite/deps/';
+        var QUIESCENCE_MS = 1500;
+        var POLL_MS = 500;
+        var fired = false;
+        var intervalId = setInterval(function() {
+            if (fired) return;
+            var entries = performance.getEntriesByType('resource');
+            var lastDepEnd = 0;
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].name.indexOf(DEPS_PATH) === -1) continue;
+                if (entries[i].responseEnd > lastDepEnd) lastDepEnd = entries[i].responseEnd;
+            }
+            if (lastDepEnd === 0) return;
+            if (performance.now() - lastDepEnd >= QUIESCENCE_MS) {
+                fired = true;
+                clearInterval(intervalId);
+                window.parent.postMessage({ type: 'IFRAME_VITE_DEPS_SETTLED' }, '*');
+            }
+        }, POLL_MS);
+    })();
+    </script><script>
+        window.__base44_sdk_attach = import("/src/api/base44Client.js").then(({ base44 }) => {
+            if (base44) {
+                Object.defineProperty(window, "base44_sdk", {
+                    value: base44,
+                    writable: false,
+                    configurable: true
+                });
+            }
+        }).catch((e) => {
+            // Some legacy/custom apps may not have the standard client module.
+            // Leave window.base44_sdk undefined; PreviewLens can fall back to UI/network checks.
+            window.parent.postMessage({ type: "PREVIEW_LENS_SDK_ATTACH_FAILED", error: String(e) }, "*");
+        });
+        </script><script type="module">
+        try {
+            const { createHotContext } = await import("/@vite/client");
+            const hot = createHotContext("/__builder-bridge-hmr");
+            const previewFEVersion = Number(new URLSearchParams(window.location.search).get("previewFE_version")) || 0;
+        
+            let wsOpenedAt = 0;
+            hot.on("vite:ws:connect", () => {
+                wsOpenedAt = Date.now();
+                window.parent.postMessage({ type: "SANDBOX_WS_CONNECT" }, "*");
+            });
+            hot.on("vite:ws:disconnect", () => {
+                let sw = null;
+                try { sw = navigator.serviceWorker; } catch (e) {}  // SecurityError where storage is denied
+                const staleClient = Date.now() - wsOpenedAt < 1000 && !!(sw && sw.controller);
+                window.parent.postMessage({ type: "SANDBOX_WS_DISCONNECT", payload: { stale_client: staleClient } }, "*");
+                if (!staleClient) return;
+                // Vite awaits this before it reloads, so the reload fetches fresh modules.
+                return Promise.race([
+                    Promise.all([
+                        sw.getRegistrations().then((regs) => Promise.all(regs.map((reg) => reg.unregister()))),
+                        caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key)))),
+                    ]),
+                    new Promise((resolve) => setTimeout(resolve, 2000)),
+                ]).catch(() => {});
+            });
+    
+            hot.on("vite:error", (payload) => {
+                const err = payload && payload.err && typeof payload.err === "object" ? payload.err : {};
+                const message = typeof err.message === "string" ? err.message : "Unknown build error";
+                const plugin = typeof err.plugin === "string" ? `[plugin:${err.plugin}] ` : "";
+                const details = [`Vite build error: ${plugin}${message}`];
+                const loc = err.loc && typeof err.loc === "object" ? err.loc : null;
+                let file = loc && typeof loc.file === "string"
+                    ? loc.file
+                    : (typeof err.id === "string" ? err.id : "");
+                if (file) {
+                    file = file.split("?")[0];
+                    if (loc && Number.isFinite(loc.line) && Number.isFinite(loc.column)) {
+                        file += `:${loc.line}:${loc.column}`;
+                    }
+                    details.push(`File: ${file}`);
+                }
+                if (typeof err.frame === "string" && err.frame.trim()) details.push(err.frame.trim());
+                if (typeof err.stack === "string" && err.stack.trim()) details.push(err.stack.trim());
+
+                const nativeBuffer = window.__base44_preview_native_failures;
+                if (!nativeBuffer || typeof nativeBuffer.append !== "function") return;
+                nativeBuffer.append(details.join(String.fromCharCode(10)));
+            });
+    
+            let hotUpdateStartedAt = 0;
+            hot.on("vite:beforeUpdate", () => { hotUpdateStartedAt = performance.now(); });
+            hot.on("vite:afterUpdate", () => {
+                const startedAt = hotUpdateStartedAt;
+                requestAnimationFrame(() => {
+                    window.parent.postMessage({ type: "SANDBOX_HOT_UPDATE_PAINTED", duration_ms: performance.now() - startedAt }, "*");
+                });
+            });
+    
+            // The pending promise holds Vite's pageReload (it awaits listeners) so the parent swaps a fresh iframe; an editor that doesn't announce previewFE_version falls back to today's in-place reload.
+            hot.on("vite:beforeFullReload", () => {
+                window.parent.postMessage({ type: "sandbox:beforeFullReload" }, "*");
+                if (previewFEVersion > 0) return new Promise(() => {});
+            });
+        } catch (e) {
+            window.parent.postMessage({ type: "SANDBOX_WS_ATTACH_FAILED", error: String(e) }, "*");
+        }
+        </script><script>
+        (function() {
+            var INTERVAL_MS = 30 * 60 * 1000;
+            var PROBE_MS = 15 * 1000;
+            var last = Date.now();
+            function renew() {
+                last = Date.now();
+                fetch("/base44-preview-session", {
+                    credentials: 'same-origin', cache: 'no-store', headers: {"x-base44-preview-keepalive": "1"}
+                }).then(function(r) {
+                    if ((r.status === 401 || r.status === 403) && window.self !== window.top) window.parent.postMessage({ type: "preview:requestRefresh" }, '*');
+                }).catch(function() {});
+            }
+            setInterval(renew, INTERVAL_MS);
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible' && Date.now() - last >= INTERVAL_MS) renew();
+            });
+            // A refused module is an opaque load error (WebKit has no responseStatus), and a grant keyed on IP+UA
+            // ends mid-page when the client's IP changes, so ask whether the session is still there.
+            var pending = 0;
+            function probe() {
+                var wait = last + PROBE_MS - Date.now();
+                if (wait <= 0) renew();
+                else if (!pending) pending = setTimeout(function() { pending = 0; renew(); }, wait);
+            }
+            window.addEventListener('error', probe, true);
+            window.addEventListener('unhandledrejection', probe);
+        })();
+        </script><script>
+    (function() {
+        if (window.self === window.top) return;
         var lastUrl = window.location.href;
         function notify() {
             var url = window.location.href;
@@ -527,7 +858,7 @@
         window.addEventListener('popstate', notify);
         window.parent.postMessage({ type: 'APP_CHANGED_URL', url: window.location.href }, '*');
     })();
-    </script><script src="https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js"></script><script src="https://www.datadoghq-browser-agent.com/us1/v5/datadog-logs.js"></script></head>
+    </script></head>
 <body class="touch">
 <div id="app">
   <header id="hud">
@@ -569,9 +900,11 @@
         <div class="topbar">
           <div class="coin"><span>◉</span><b id="coinCount">300</b><em>COIN</em></div>
           <div class="tools">
-            <button class="tbtn" id="passBtn" type="button">引き継ぎ</button>
+            <button class="tbtn" id="passBtn" type="button">管理者コード</button>
             <button class="tbtn" id="logoutBtn" type="button">ログアウト</button>
+            <button class="tbtn" id="skinBtn" type="button">スキン <b>500</b></button>
             <button class="tbtn" id="gachaBtn" type="button">ガチャ <b>100</b></button>
+            <a class="tbtn" id="saveBtn" href="game.html" download="kyomachi-hado-duel.html">HTMLを保存</a>
           </div>
         </div>
 
@@ -639,14 +972,12 @@
     <div id="pass" class="overlay hidden">
       <div class="gpanel">
         <button class="gclose" id="passClose" type="button">✕</button>
-        <p class="glabel">DATA TRANSFER</p>
-        <h2 class="gtitle">データの引き継ぎ</h2>
-        <div class="gbox"><div style="text-align:center"><p class="idle">いまのパスワード</p><p class="passcode" id="passCode">----</p></div></div>
-        <p class="hint">このパスワードを控えておけば、別の端末でも続きから遊べます(コインは3800まで)</p>
-        <div class="grow"><span>パスワードを入力して読み込む</span></div>
+        <p class="glabel">ADMIN</p>
+        <h2 class="gtitle">管理者コード</h2>
+        <div class="grow"><span>コードを入力してください</span></div>
         <div class="passrow">
           <input id="passInput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="0000">
-          <button class="tbtn" id="passLoad" type="button">読み込む</button>
+          <button class="tbtn" id="passLoad" type="button">決定</button>
         </div>
         <p class="passmsg" id="passMsg"></p>
       </div>
@@ -657,8 +988,7 @@
         <button class="gclose" id="logoutClose" type="button">✕</button>
         <p class="glabel">LOGOUT</p>
         <h2 class="gtitle">ログアウト</h2>
-        <div class="gbox"><div style="text-align:center"><p class="idle">引き継ぎパスワード</p><p class="passcode" id="logoutCode">----</p></div></div>
-        <p class="hint">ログアウトすると、この端末のデータ(コイン・キャラ)は初期状態に戻ります。続きから遊ぶには、上のパスワードを控えておいてください。</p>
+        <p class="hint">ログアウトすると、この端末のデータ(コイン・キャラ)は初期状態に戻ります。</p>
         <div class="passrow">
           <button class="tbtn" id="logoutCancel" type="button" style="flex:1;justify-content:center">やめる</button>
           <button class="tbtn" id="logoutDo" type="button" style="flex:1;justify-content:center;border-color:rgba(255,120,120,.6);color:#ffb0b0">ログアウトする</button>
@@ -666,9 +996,23 @@
       </div>
     </div>
 
+    <div id="skin" class="overlay hidden">
+      <div class="gpanel">
+        <button class="gclose" id="skinClose" type="button">✕</button>
+        <p class="glabel">SKIN</p>
+        <h2 class="gtitle">スキン</h2>
+        <div class="grow">
+          <span>所持コイン <b id="skinCoins">300</b></span>
+          <span>1つ <b style="color:rgba(255,255,255,.65)">500</b></span>
+        </div>
+        <p class="hint">買ったスキンは、いつでも着け外しできます(入手済みのキャラのみ)</p>
+        <div id="skinList"></div>
+      </div>
+    </div>
+
     <div id="select" class="overlay hidden">
+      <button class="gclose" id="selectClose" type="button" aria-label="閉じる">✕</button>
       <div class="spn">
-        <button class="gclose" id="selectClose" type="button">✕</button>
         <p class="glabel">CHARACTER SELECT</p>
         <h2 class="gtitle">キャラを選ぶ</h2>
         <div class="tabs" id="selectTabs"></div>
@@ -755,6 +1099,8 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
     { id: "daidai", name: "江口", color: "#FF8A3D", deep: "#5A2A07", photo: true }
   ];
 
+  var SKIN_COST = 500;
+  var SKIN_TYPES = [{ id: "aura", name: "オーラ" }, { id: "circle", name: "魔法陣" }];
   var COIN_PER_MATCH = 100;
   var GACHA_COST = 100;
   var STARTERS = ["kurenai", "aoi"];
@@ -1464,7 +1810,195 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
     }
   }
 
+  /* ---------- スキン(オーラ / 魔法陣) ---------- */
+
+  function skinOn(charId, skinId) {
+    var list = wallet.skinOn[charId];
+    return !!list && list.indexOf(skinId) !== -1;
+  }
+
+  function drawMagicCircle(ctx, x, y, time, color, power, seed) {
+    var R = 76 + power * 16;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(1, 0.34);
+    ctx.globalCompositeOperation = "lighter";
+
+    var glow = ctx.createRadialGradient(0, 0, R * 0.1, 0, 0, R * 1.08);
+    glow.addColorStop(0, rgba(color, 0.3));
+    glow.addColorStop(0.7, rgba(color, 0.13));
+    glow.addColorStop(1, rgba(color, 0));
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(0, 0, R * 1.08, 0, Math.PI * 2); ctx.fill();
+
+    ctx.lineCap = "round";
+    ctx.strokeStyle = rgba(color, 0.95);
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = rgba(color, 0.7);
+    ctx.beginPath(); ctx.arc(0, 0, R * 0.86, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0, 0, R * 0.38, 0, Math.PI * 2); ctx.stroke();
+
+    /* 回る星形 */
+    ctx.save();
+    ctx.rotate(time * 0.6 + seed);
+    ctx.strokeStyle = rgba(color, 0.85);
+    ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    for (var k = 0; k <= 5; k += 1) {
+      var ang = (k * 2) * Math.PI * 2 / 5 - Math.PI / 2;
+      var px = Math.cos(ang) * R * 0.84, py = Math.sin(ang) * R * 0.84;
+      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    /* 逆回りの文字ばしら */
+    ctx.save();
+    ctx.rotate(-time * 0.9 - seed);
+    ctx.strokeStyle = rgba(color, 0.8);
+    ctx.lineWidth = 2;
+    for (var i = 0; i < 28; i += 1) {
+      var a2 = i * Math.PI * 2 / 28;
+      var r1 = R * (i % 2 ? 0.91 : 0.9), r2 = R * (i % 2 ? 0.97 : 0.99);
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a2) * r1, Math.sin(a2) * r1);
+      ctx.lineTo(Math.cos(a2) * r2, Math.sin(a2) * r2);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  function drawAuraSkin(ctx, x, y, time, color, power, seed) {
+    var GOLD = "#ffd07a";
+    var pulse = (time * 0.62 + seed * 0.13) % 1;
+    var pulse2 = (pulse + 0.5) % 1;
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    /* 1. 芯の光 — キャラ色の気に、金の熱を重ねる */
+    var baseR = 122 + power * 36 + Math.sin(time * 2.2 + seed) * 5;
+    var base = ctx.createRadialGradient(x, y - 4, 4, x, y - 4, baseR);
+    base.addColorStop(0, "rgba(255,246,226," + (0.2 + power * 0.22) + ")");
+    base.addColorStop(0.22, rgba(color, 0.22));
+    base.addColorStop(0.6, rgba(color, 0.09));
+    base.addColorStop(1, rgba(color, 0));
+    ctx.fillStyle = base;
+    ctx.beginPath(); ctx.arc(x, y - 4, baseR, 0, Math.PI * 2); ctx.fill();
+
+    var warm = ctx.createRadialGradient(x, y + 30, 2, x, y + 30, baseR * 0.7);
+    warm.addColorStop(0, rgba(GOLD, 0.16 + power * 0.18));
+    warm.addColorStop(0.65, rgba(GOLD, 0.04));
+    warm.addColorStop(1, rgba(GOLD, 0));
+    ctx.fillStyle = warm;
+    ctx.beginPath(); ctx.arc(x, y + 30, baseR * 0.7, 0, Math.PI * 2); ctx.fill();
+
+    /* 2. 足元の円相 — 太さの変わる墨の一筆 */
+    var ringR = 60 + power * 12;
+    var spin = time * 0.3 + seed;
+    ctx.save();
+    ctx.translate(x, y + 46);
+    ctx.scale(1, 0.34);
+    ctx.lineCap = "round";
+    for (var s = 0; s < 26; s += 1) {
+      var t0 = s / 26;
+      var taper = Math.sin(t0 * Math.PI);
+      var a0 = spin + t0 * Math.PI * 1.84 - 0.55;
+      ctx.strokeStyle = rgba(color, 0.06 + taper * 0.6);
+      ctx.lineWidth = 0.8 + taper * 7.5;
+      ctx.beginPath();
+      ctx.arc(0, 0, ringR + taper * 4, a0, a0 + Math.PI * 1.84 / 26 + 0.03);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = rgba(color, 0.26);
+    ctx.lineWidth = 1.3;
+    ctx.setLineDash([2, 10]);
+    ctx.lineDashOffset = -time * 22;
+    ctx.beginPath(); ctx.arc(0, 0, ringR - 11, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    /* 3. 立ちのぼる気 — 筆で払ったような炎 */
+    var rise = 0.72 + power * 0.6;
+    for (var k = 0; k < 7; k += 1) {
+      var ph = time * (1.05 + k * 0.05) + k * 1.13 + seed;
+      var bx = x + Math.sin(k * 2.399 + seed) * 26;
+      var by = y + 40;
+      var h = (84 + 38 * Math.sin(time * 1.25 + k * 1.9)) * rise;
+      var sway = Math.sin(ph) * (13 + k * 1.6);
+      var w = 6 + 3.4 * Math.sin(time * 1.6 + k * 2.3);
+      var grad = ctx.createLinearGradient(bx, by, bx + sway, by - h);
+      grad.addColorStop(0, rgba(color, 0.3 + power * 0.2));
+      grad.addColorStop(0.5, rgba(color, 0.14 + power * 0.12));
+      grad.addColorStop(1, rgba(GOLD, 0.03));
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(bx - w, by);
+      ctx.quadraticCurveTo(bx - w * 0.6 + sway * 0.35, by - h * 0.55, bx + sway, by - h);
+      ctx.quadraticCurveTo(bx + w * 0.6 + sway * 0.35, by - h * 0.55, bx + w, by);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    /* 4. 巴の渦 — 身体をめぐる三本の気 */
+    for (var arm = 0; arm < 3; arm += 1) {
+      var start = arm * 2.094 + time * 0.85 + seed;
+      var px = 0, py = 0;
+      for (var j = 0; j <= 13; j += 1) {
+        var tt = j / 13;
+        var ang = start + tt * 2.25;
+        var rad = (84 - tt * 34 + power * 10) * (1 + 0.06 * Math.sin(time * 2 + arm));
+        var nx = x + Math.cos(ang) * rad;
+        var ny = y - 12 + Math.sin(ang) * rad * 0.88 - tt * 8;
+        if (j > 0) {
+          ctx.strokeStyle = rgba(color, (0.5 - tt * 0.42) * (0.6 + power * 0.5));
+          ctx.lineWidth = 0.8 + (1 - tt) * 5.6;
+          ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny); ctx.stroke();
+        }
+        px = nx; py = ny;
+      }
+    }
+
+    /* 5. 金の火の粉 */
+    for (var i = 0; i < 18; i += 1) {
+      var life = (time * 0.5 + i / 18 + seed * 0.1) % 1;
+      var a = i * 2.399 + time * 0.5 * (i % 2 ? 1 : -1) + seed;
+      var rr = 24 + 26 * Math.sin(time * 1.4 + i * 1.3) + life * 14;
+      var fx = x + Math.cos(a) * rr + Math.sin(time * 2.1 + i) * 7;
+      var fy = y + 40 - life * 130 + Math.sin(a) * rr * 0.3;
+      var size = (3.2 + 2.4 * Math.sin(i * 1.7 + time * 2.4)) * (1 - life * 0.6) * (1 + power * 0.5);
+      var alpha = (1 - life) * 0.85;
+      ctx.fillStyle = rgba(GOLD, alpha * 0.5);
+      ctx.beginPath(); ctx.arc(fx, fy, Math.max(0.4, size * 1.8), 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "rgba(255,252,242," + (alpha * 0.75) + ")";
+      ctx.beginPath(); ctx.arc(fx, fy, Math.max(0.3, size * 0.62), 0, Math.PI * 2); ctx.fill();
+    }
+
+    /* 6. 覇気の波動 — 外へ広がる二重の気配 */
+    for (var p = 0; p < 2; p += 1) {
+      var pr = p === 0 ? pulse : pulse2;
+      ctx.strokeStyle = rgba(p === 0 ? color : GOLD, (1 - pr) * (1 - pr) * (0.3 + power * 0.22));
+      ctx.lineWidth = 0.8 + (1 - pr) * 2.2;
+      ctx.beginPath(); ctx.arc(x, y + 4, 44 + pr * 104, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
   function drawFighter(ctx, player, time, palette) {
+    var pw = player.charging ? player.charge : 0;
+    var hasSprite = palette.photo && SPRITES[palette.id];
+    var foot = player.y + (hasSprite ? SPRITE_FEET - 2 : 30);
+    if (skinOn(palette.id, "circle")) drawMagicCircle(ctx, player.x, foot, time, palette.color, pw, player.index);
+    if (skinOn(palette.id, "aura")) drawAuraSkin(ctx, player.x, player.y, time, palette.color, pw, player.index);
+    drawFighterBase(ctx, player, time, palette);
+  }
+
+  function drawFighterBase(ctx, player, time, palette) {
     var sprite = palette.photo ? SPRITES[palette.id] : null;
     if (sprite) { drawPhotoFighter(ctx, player, time, palette, sprite); return; }
     var cx = player.x;
@@ -1686,7 +2220,7 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
 
   /* ---------- wallet ---------- */
 
-  var wallet = { coins: 300, owned: STARTERS.slice() };
+  var wallet = { coins: 300, owned: STARTERS.slice(), skinOwned: {}, skinOn: {} };
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -1700,6 +2234,18 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
       }
     }
   } catch (error) { /* fresh wallet */ }
+  try {
+    var rawSkin = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    ["skinOwned", "skinOn"].forEach(function (key) {
+      var src = rawSkin && rawSkin[key];
+      if (!src || typeof src !== "object") return;
+      CHARS.forEach(function (c) {
+        if (Array.isArray(src[c.id])) {
+          wallet[key][c.id] = src[c.id].filter(function (id) { return SKIN_TYPES.some(function (t) { return t.id === id; }); });
+        }
+      });
+    });
+  } catch (error) { /* no skins yet */ }
 
   /* テストプレイ用: 起動のたびにコインをこの値にする。製品版では null にする。 */
   var TEST_COINS = null;
@@ -2089,50 +2635,14 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
     });
   });
 
-  /* ---------- 引き継ぎパスワード(4桁) ----------
-     所持キャラ(解放できる8人ぶん)とコイン(100単位・最大3800)を
-     0〜9983の数字にまとめ、並べ替えて4桁にしています。サーバー不要。 */
-  var PASS_MAX_COIN_UNITS = 38;
-  var PASS_MUL = 7, PASS_ADD = 1234, PASS_INV = 7143; /* 7 × 7143 ≡ 1 (mod 10000) */
-
-  function unlockables() {
-    return CHARS.filter(function (c) { return STARTERS.indexOf(c.id) === -1; });
-  }
-
-  function makePassword() {
-    var mask = 0;
-    unlockables().forEach(function (c, i) {
-      if (wallet.owned.indexOf(c.id) !== -1) mask |= (1 << i);
-    });
-    var units = Math.min(PASS_MAX_COIN_UNITS, Math.floor(wallet.coins / 100));
-    var n = units * 256 + mask;
-    var code = (n * PASS_MUL + PASS_ADD) % 10000;
-    return String(code).padStart(4, "0");
-  }
-
-  function applyPassword(text) {
-    if (!/^[0-9]{4}$/.test(text)) return false;
-    var code = parseInt(text, 10);
-    var n = (((code - PASS_ADD) % 10000 + 10000) % 10000 * PASS_INV) % 10000;
-    if (n >= (PASS_MAX_COIN_UNITS + 1) * 256) return false;
-    var mask = n % 256, units = Math.floor(n / 256);
-    var owned = STARTERS.slice();
-    unlockables().forEach(function (c, i) {
-      if (mask & (1 << i)) owned.push(c.id);
-    });
-    wallet.owned = owned;
-    wallet.coins = units * 100;
-    state.selection = state.selection.map(function (id, i) {
-      return owned.indexOf(id) !== -1 ? id : STARTERS[i];
-    });
-    saveWallet();
-    return true;
-  }
+  /* ---------- 管理者コード ----------
+     入力すると全キャラ解放・コイン10000になります。 */
+  var ADMIN_CODE = "0601";
+  var ADMIN_COINS = 10000;
 
   var passEl = $("pass"), passMsg = $("passMsg"), passInput = $("passInput");
 
   $("passBtn").addEventListener("click", function () {
-    $("passCode").textContent = makePassword();
     passInput.value = "";
     passMsg.textContent = "";
     passMsg.className = "passmsg";
@@ -2144,23 +2654,90 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
   });
 
   $("passLoad").addEventListener("click", function () {
-    if (applyPassword(passInput.value.trim())) {
+    if (passInput.value.trim() === ADMIN_CODE) {
+      wallet.owned = CHARS.map(function (c) { return c.id; });
+      wallet.coins = ADMIN_COINS;
+      wallet.skinOwned = {};
+      CHARS.forEach(function (c) {
+        wallet.skinOwned[c.id] = SKIN_TYPES.map(function (t) { return t.id; });
+      });
+      saveWallet();
       renderGacha();
       renderPicks();
       applyPalette();
-      $("passCode").textContent = makePassword();
-      passMsg.textContent = "読み込みました(コイン " + wallet.coins + ")";
+      passMsg.textContent = "全キャラとスキンを解放しました(コイン " + wallet.coins + ")";
       passMsg.className = "passmsg ok";
     } else {
-      passMsg.textContent = "パスワードが正しくありません";
+      passMsg.textContent = "コードが正しくありません";
       passMsg.className = "passmsg ng";
     }
+  });
+
+  /* ---------- スキン画面 ---------- */
+  var skinEl = $("skin");
+
+  function renderSkins() {
+    $("skinCoins").textContent = wallet.coins;
+    $("coinCount").textContent = wallet.coins;
+    var host = $("skinList");
+    host.innerHTML = "";
+    CHARS.forEach(function (c) {
+      if (wallet.owned.indexOf(c.id) === -1) return;
+      var item = document.createElement("div");
+      item.className = "skitem";
+      var name = document.createElement("span");
+      name.className = "skname";
+      name.textContent = c.name;
+      name.style.color = c.color;
+      item.appendChild(name);
+      SKIN_TYPES.forEach(function (t) {
+        var owned = (wallet.skinOwned[c.id] || []).indexOf(t.id) !== -1;
+        var on = skinOn(c.id, t.id);
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tbtn skbtn" + (on ? " on" : "");
+        if (!owned) {
+          btn.textContent = t.name + " " + SKIN_COST;
+          btn.disabled = wallet.coins < SKIN_COST;
+        } else {
+          btn.textContent = t.name + (on ? " 外す" : " 着ける");
+        }
+        btn.addEventListener("click", function () { toggleSkin(c.id, t.id); });
+        item.appendChild(btn);
+      });
+      host.appendChild(item);
+    });
+  }
+
+  function toggleSkin(charId, skinId) {
+    var owned = wallet.skinOwned[charId] || (wallet.skinOwned[charId] = []);
+    var on = wallet.skinOn[charId] || (wallet.skinOn[charId] = []);
+    if (owned.indexOf(skinId) === -1) {
+      if (wallet.coins < SKIN_COST) return;
+      wallet.coins -= SKIN_COST;
+      owned.push(skinId);
+      on.push(skinId);
+    } else if (on.indexOf(skinId) === -1) {
+      on.push(skinId);
+    } else {
+      on.splice(on.indexOf(skinId), 1);
+    }
+    saveWallet();
+    renderSkins();
+    renderGacha();
+  }
+
+  $("skinBtn").addEventListener("click", function () {
+    renderSkins();
+    skinEl.classList.remove("hidden");
+  });
+  $("skinClose").addEventListener("click", function () {
+    skinEl.classList.add("hidden");
   });
 
   var logoutEl = $("logout");
 
   $("logoutBtn").addEventListener("click", function () {
-    $("logoutCode").textContent = makePassword();
     logoutEl.classList.remove("hidden");
   });
 
@@ -2172,6 +2749,8 @@ window.HADO_SPRITES = {"tetsu":{"idle":"data:image/webp;base64,UklGRrwjAABXRUJQV
     try { localStorage.removeItem(STORAGE_KEY); } catch (error) { /* ignore */ }
     wallet.coins = 300;
     wallet.owned = STARTERS.slice();
+    wallet.skinOwned = {};
+    wallet.skinOn = {};
     state.selection = STARTERS.slice();
     saveWallet();
     renderGacha();
